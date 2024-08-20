@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Витрина продуктов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto; /* добавляем прокрутку */
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .product-container {
+            display: flex;
+            flex-direction: column; /* отобразить элементы в колонку */
+            align-items: center;
+            gap: 20px; /* расстояние между элементами */
+            max-width: 600px; /* максимальная ширина контейнера */
+            margin: 20px;
+            padding-bottom: 20px; /* отступ снизу для прокрутки */
+        }
+
+        .product {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%; /* растянуть карточку на всю ширину */
+            transition: transform 0.2s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product h2 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .price {
+            font-size: 1.2em;
+            color: #28a745;
+        }
+
+        .description {
+            color: #555;
+        }
+
+        .account {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%; /* растянуть карточку на всю ширину */
+            margin: 20px;
+            text-align: center;
+        }
+
+        .account h2 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .balance {
+            font-size: 1.2em;
+            color: #28a745;
+        }
+
+        .purchases {
+            font-size: 1.2em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛒 Витрина наших продуктов</h1>
+    <div class="product-container">
+        <div class="product">
+            <h2>Товар 1</h2>
+            <p class="price">Цена: 100₽</p>
+            <p class="description">Описание товара 1</p>
+            <form action="/purchase" method="post">
+                <input type="hidden" name="product_id" value="1">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+        <div class="product">
+            <h2>Товар 2</h2>
+            <p class="price">Цена: 200₽</p>
+            <p class="description">Описание товара 2</p>
+            <form action="/purchase" method="post">
+                <input type="hidden" name="product_id" value="2">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+        <div class="product">
+            <h2>Товар 3</h2>
+            <p class="price">Цена: 300₽</p>
+            <p class="description">Описание товара 3</p>
+            <form action="/purchase" method="post">
+                <input type="hidden" name="product_id" value="3">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+        <div class="product">
+            <h2>Товар 4</h2>
+            <p class="price">Цена: 400₽</p>
+            <p class="description">Описание товара 4</p>
+            <form action="/purchase" method="post">
+                <input type="hidden" name="product_id" value="4">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+        <div class="product">
+            <h2>Товар 5</h2>
+            <p class="price">Цена: 500₽</p>
+            <p class="description">Описание товара 5</p>
+            <form action="/purchase" method="post">
+                <input type="hidden" name="product_id" value="5">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+        <div class="product">
+            <h2>Товар 6</h2>
+            <p class="price">Цена: 600₽</p>
+            <p class="description">Описание товара 6</p>
+            <form action="/purchase" method="post">
+                <input type="hidden" name="product_id" value="6">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+    </div>
+    <div class="account">
+        <h2>Личный кабинет</h2>
+        <p class="balance">Баланс: <span id="balance">0</span>₽</p>
+        <p class="purchases">Количество покупок: <span id="purchases">0</span></p>
+    </div>
+
+    <script>
+        let balance = 0;
+        let purchases = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const purchaseButtons = document.querySelectorAll('input[type="submit"]');
+            purchaseButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const productId = button.parentNode.querySelector('input[type="hidden"]').value;
+                    const price = button.parentNode.parentNode.querySelector('.price').textContent.match(/\d+/)[0];
+                    balance -= parseInt(price);
+                    purchases++;
+                    document.getElementById('balance').textContent = balance;
+                    document.getElementById('purchases').textContent = purchases;
+                    localStorage.setItem('balance', balance);
+                    localStorage.setItem('purchases', purchases);
+                });
+            });
+
+            // загрузка сохраненных данных
+            if (localStorage.getItem('balance')) {
+                balance = parseInt(localStorage.getItem('balance'));
+                document.getElementById('balance').textContent = balance;
+            }
+            if (localStorage.getItem('purchases')) {
+                purchases = parseInt(localStorage.getItem('purchases'));
+                document.getElementById('purchases').textContent = purchases;
+            }
+        });
+    </script>
+</body>
+</html>
