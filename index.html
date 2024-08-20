@@ -151,15 +151,6 @@
     </div>
 
     <script>
-        let balance = 0;
-        let purchases = 0;
-
-        const githubToken = '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';
-        const repoOwner = 'DarkFire5472';
-        const repoName = 'my-shop.github.io';
-
-        const githubApi = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data.json`;
-
         document.addEventListener('DOMContentLoaded', function() {
           const purchaseButtons = document.querySelectorAll('input[type="submit"]');
           purchaseButtons.forEach(button => {
@@ -170,7 +161,7 @@
               updateData(productId, price);
             });
           });
-
+        
           // Загрузка данных из GitHub
           fetch(githubApi, {
             headers: {
@@ -187,26 +178,6 @@
           })
           .catch(error => console.error(error));
         });
-
-        function updateData(productId, price) {
-          balance -= parseInt(price);
-          purchases++;
-          const data = { balance, purchases };
-          fetch(githubApi, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${githubToken}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          })
-          .then(response => response.json())
-          .then(data => {
-            document.getElementById('balance').textContent = data.balance;
-            document.getElementById('purchases').textContent = data.purchases;
-          })
-          .catch(error => console.error(error));
-        }
     </script>
 </body>
 </html>
